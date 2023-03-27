@@ -18,6 +18,8 @@ public class SystemUtils {
 
     private static String DATAX_HOME;
 
+    private static String PYTHON_HOME;
+
     private SystemUtils() {
     }
 
@@ -36,5 +38,20 @@ public class SystemUtils {
         DATAX_HOME = dataXHome.endsWith(File.separator) ? dataXHome : dataXHome.concat(File.separator);
         //LOGGER.info("DATAX_HOME:{}", DATAX_HOME);
         return DATAX_HOME;
+    }
+
+    /**
+     * 获取环境变量中的Python路径
+     *
+     * @return
+     */
+    public static String getPythonPath() {
+        if (StringUtils.isNotEmpty(PYTHON_HOME)) return PYTHON_HOME;
+        String pythonHome = System.getenv("PYTHON_HOME");
+        if (StringUtils.isBlank(pythonHome)) {
+            return null;
+        }
+        PYTHON_HOME = pythonHome.endsWith(File.separator) ? pythonHome : pythonHome.concat(File.separator);
+        return PYTHON_HOME;
     }
 }

@@ -62,7 +62,7 @@ public class ExecutorJobHandler extends IJobHandler {
         tmpFilePath = generateTemJsonFile(jobJson);
 
         try {
-            String[] cmdarrayFinal = buildDataXExecutorCmd(trigger, tmpFilePath,dataXPyPath);
+            String[] cmdarrayFinal = buildDataXExecutorCmd(trigger, tmpFilePath, dataXPyPath);
             final Process process = Runtime.getRuntime().exec(cmdarrayFinal);
             String prcsId = ProcessUtil.getProcessId(process);
             JobLogger.log("------------------DataX process id: " + prcsId);

@@ -34,7 +34,16 @@ public class BuildCommand {
         // command process
         //"--loglevel=debug"
         List<String> cmdArr = new ArrayList<>();
-        cmdArr.add("python");
+
+        // 处理python路径（todo 针对不同客户端）
+        String pythonHomePath = SystemUtils.getPythonPath();
+        String pythonCommand = "python3";
+        if (StringUtils.isNotEmpty(pythonHomePath)) {
+            pythonCommand = pythonHomePath.contains("bin") ? pythonHomePath + pythonCommand : pythonHomePath + "bin" + File.separator + pythonCommand;
+        }
+        cmdArr.add(pythonCommand);
+
+        // 处理datax路径
         String dataXHomePath = SystemUtils.getDataXHomePath();
         if (StringUtils.isNotEmpty(dataXHomePath)) {
             dataXPyPath = dataXHomePath.contains("bin") ? dataXHomePath + DEFAULT_DATAX_PY : dataXHomePath + "bin" + File.separator + DEFAULT_DATAX_PY;
@@ -44,8 +53,15 @@ public class BuildCommand {
         if (StringUtils.isNotBlank(doc)) {
             cmdArr.add(doc.replaceAll(SPLIT_SPACE, TRANSFORM_SPLIT_SPACE));
         }
+
+        // 处理自定义参数
+        String customParam = buildDataXCustomParam(tgParam);
+        if (StringUtils.isNotBlank(customParam)) {
+            cmdArr.add(customParam);
+        }
+
+        // 处理job文件
         cmdArr.add(tmpFilePath);
-        cmdArr.add(buildDataXCustomParam(tgParam));
         return cmdArr.toArray(new String[cmdArr.size()]);
     }
 
